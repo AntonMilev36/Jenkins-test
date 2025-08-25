@@ -20,4 +20,10 @@ pipeline {
             steps { sh 'npm test' }
         }
     }
+
+    post {
+    always {
+        githubNotify context: 'CI Tests', status: currentBuild.currentResult
+    }
+}
 }
