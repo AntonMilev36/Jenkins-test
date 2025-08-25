@@ -12,11 +12,11 @@ stages {
                     try {
                         sh 'npm install'
                         sh 'npm test'
-                        // notify GitHub of success
-                        githubNotify context: 'CI/Jenkins', status: 'SUCCESS'
+                        // Report success to GitHub
+                        setGitHubPullRequestStatus context: 'CI/Jenkins', status: 'SUCCESS'
                     } catch (err) {
-                        // notify GitHub of failure
-                        githubNotify context: 'CI/Jenkins', status: 'FAILURE'
+                        // Report failure to GitHub
+                        setGitHubPullRequestStatus context: 'CI/Jenkins', status: 'FAILURE'
                         throw err
                     }
                 }
