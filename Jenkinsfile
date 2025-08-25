@@ -12,11 +12,19 @@ stages {
                     try {
                         sh 'npm install'
                         sh 'npm test'
-                        // Report success to GitHub
-                        setGitHubPullRequestStatus context: 'CI/Jenkins', status: 'SUCCESS'
+                        setGitHubPullRequestStatus(
+                            context: 'CI/Jenkins',
+                            state: 'SUCCESS',
+                            description: 'Tests passed',
+                            targetUrl: env.BUILD_URL
+                        )
                     } catch (err) {
-                        // Report failure to GitHub
-                        setGitHubPullRequestStatus context: 'CI/Jenkins', status: 'FAILURE'
+                        setGitHubPullRequestStatus(
+                            context: 'CI/Jenkins',
+                            state: 'FAILURE',
+                            description: 'Tests failed',
+                            targetUrl: env.BUILD_URL
+                        )
                         throw err
                     }
                 }
