@@ -11,9 +11,16 @@ stages {
                 sh 'npm install'
                     }
                 }
+
         stage("Test") {
             steps {
                 sh "npm test"
+            }
+        }
+
+        stage("Image building") {
+            steps {
+                sh "docker-compose up"
             }
         }
     }
