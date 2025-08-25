@@ -5,23 +5,17 @@ pipeline {
         nodejs "node"
     }
 
-stages {
-        stage("Build") {
-            steps {
-                sh 'npm install'
+    stages {
+            stage("Build") {
+                steps {
+                    sh 'npm install'
+                        }
                     }
+
+            stage("Test") {
+                steps {
+                    sh "npm test"
                 }
-
-        stage("Test") {
-            steps {
-                sh "npm test"
             }
-        }
-
-        stage("Image building") {
-            steps {
-                sh "docker-compose up"
-            }
-        }
     }
 }
