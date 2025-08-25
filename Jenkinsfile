@@ -5,25 +5,22 @@ pipeline {
         nodejs "node"
     }
 
-    stages {
-        stage('Checkout') {
+stages {
+        stage('Build & Test') {
             steps {
-                git branch: 'main', url: 'https://github.com/AntonMilev36/Jenkins-test.git'
+                script {
+                    try {
+                        sh 'npm install'
+                        sh 'npm test'
+                        // notify GitHub of success
+                        githubNotify context: 'CI/Jenkins', status: 'SUCCESS'
+                    } catch (err) {
+                        // notify GitHub of failure
+                        githubNotify context: 'CI/Jenkins', status: 'FAILURE'
+                        throw err
+                    }
+                }
             }
         }
-
-        stage('Install dependencies') {
-            steps { sh 'npm install' }
-        }
-
-        stage('Run tests') {
-            steps { sh 'npm test' }
-        }
     }
-
-    post {
-    always {
-        githubNotify context: 'CI Tests', status: currentBuild.currentResult
-    }
-}
 }
